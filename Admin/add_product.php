@@ -5,6 +5,8 @@ $stmt= $con->prepare("SELECT * FROM categories");
 $stmt->execute();
 $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$uploadPath="../products_images";
+
 if($_SERVER['REQUEST_METHOD']=== 'POST'){
       //handle login submit
       $sku = $_POST['sku'];
@@ -14,10 +16,20 @@ if($_SERVER['REQUEST_METHOD']=== 'POST'){
       $description = $_POST['description'];
       $status=$_POST['status'];
 
+       $imageName=null;
+      if(is_uploaded_file($_FILES['image_name']['tmp_name'])){
+        $imageName=$_FILES['image_name']['name'];
+        move_uploaded_file($_FILES['image_name']['tmp_name'],$uploadPath . "/" . $imageName);
+      
+      }
+    
+      
+
       $sql="INSERT INTO products SET
       sku='$sku',
       name='$name',
       price=$price,
+      image_name='$imageName',
       category_id=$category_id,
       description='$description',
       status=$status";
@@ -44,7 +56,7 @@ if($_SERVER['REQUEST_METHOD']=== 'POST'){
     Hello <?php echo $_SESSION['username'];?> !
     <a  onclick="return confirm('Are you sure to logout');" href="logout.php">Logout</a>
 </p>
- <?php require_once("./menu.php");?>
+ <?php require_once("./menus.php");?>
 <div class="main" >
 <h2>Products</h2>
 <div class="card-header">
@@ -53,7 +65,7 @@ Add New Products
 <div class="card-body">
 
 
-<form method="post" action="">
+<form method="post" action="" enctype="multipart/form-data">
 <div class="form-group">
 <label for="name">SKU:</label>
 <input type="text" name="sku" class="form-control" id="sku">

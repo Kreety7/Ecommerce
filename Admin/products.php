@@ -52,9 +52,11 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <thead>
             <tr>
                 <th>ID</th>
+                <th>sku</th>
                 <th>Name</th>
                 <th>Category</th>
                 <th>Price</th>
+                <th>Photos</th>
                 <th>Status</th>
                 <th>Action</th>
 
@@ -66,10 +68,15 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         ?>
         <tr> 
             <td><?php echo $product['id'];?></td>
+            <td><?php echo $product['sku'];?></td>
             <td><?php echo $product['name'];?></td>
             <td><?php echo $product['category_name'];?></td>
             <td> Rs.<?php echo number_format($product['price'],2);?></td>
-            <td><?php echo $product['status']==1?'Active':'Inactive';?></td>
+            
+            <td>
+                <img width="100" src="../products_images/<?php echo $product['image_name'];?>"  alt="">
+    </td>
+    <td><?php echo $product['status']==1?'Active':'Inactive';?></td>
             <td>
                 <a href="edit_product.php?id=<?php echo $product['id'];?>">Edit</a>
                 <a 
